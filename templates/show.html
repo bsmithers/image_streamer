@@ -1,0 +1,112 @@
+<html>
+    <head>
+    <style type="text/css">
+    body{
+        overflow:hidden;
+        margin: 0px;
+    }
+    
+    img.slide{
+        max-height:100%;
+    }
+
+    #footer{
+        border-top: 1px black solid;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+        background-color: ddd;
+        font-family: arial, sans-serif;
+    }
+
+    #footer a, a:visited {
+        color: blue;
+    }
+
+    #image-container{
+        height: 782px;
+    }
+
+
+    #slide-container{
+        width: 1280px;
+        height: 800px;
+    }
+
+
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        var IMAGE_ROTATE_TIME = 10 * 1000; //Set a short rotate time to start, so the config is loaded from the server
+        var CONFIG_UPDATE_TIME = 10 * 1000;
+        var image_list = [];
+        var current_image = -1;
+
+
+        function update_image_listing(){
+            $.getJSON('listing', success=function(data){
+                image_list = data
+                do_rotate()
+            })
+        }
+
+        function rotate_image(){
+            current_image = current_image + 1
+            console.log('Rotating image')
+            if (current_image >= image_list.length){
+                console.log('Refreshing listing')
+                current_image = 0
+                update_image_listing()
+            }else{
+                do_rotate()
+            }
+            setTimeout(rotate_image, IMAGE_ROTATE_TIME);
+        }
+
+        function do_rotate(){
+            if (current_image >= image_list.length){
+                $('#image-container').html('<h1>No content available</h1>')
+            }
+            console.log(image_list[current_image])
+            $('#image-container').html('<img class="slide" src="' + image_list[current_image] + '">');
+        }
+
+        $(document).ready(function(){
+            update_config();
+            setInterval(update_config, CONFIG_UPDATE_TIME);
+            rotate_image();
+        })
+
+        function update_config(){
+            console.log('Updating config')
+            $.getJSON('static/config.json?id=' + new Date().getTime(), function(data){
+                IMAGE_ROTATE_TIME = data["timeout"] * 1000
+                $('#footer').html(data["footer_html"])
+                if (data["show_footer"]){
+                    $('#footer').show();
+                }else{
+                    $('#footer').hide();
+                }
+
+                console.log(data["footer_height"])
+                $('#image-container').height(800 - data["footer_height"])
+                $('#footer').height(data["footer_height"])
+
+            }).fail(function(jqxhr, textStatus, error){
+                var err = textStatus + ", " + error;
+                console.log( "Request Failed: " + err );
+            })
+    }
+
+    </script>
+    </head>
+    <body>
+    <div id="slide-container">
+    <div id="image-container">
+    </div>
+    <div id="footer">
+        Waiting for footer...
+    </div>
+    </div>
+    </body>
+</html>

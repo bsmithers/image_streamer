@@ -1,0 +1,6 @@
+{
+    "timeout": 45,
+    "show_footer": true,
+    "footer_html": "To add new images, please visit: <a href=\"http://tinyurl.com/lsb-upload\">tinyurl.com/lsb-upload</a> | For help, please see Ben or Matt in 2B13",
+    "footer_height": "18"
+}
