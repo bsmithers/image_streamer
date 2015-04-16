@@ -4,8 +4,10 @@
 
 <h3>Image Guidelines</h3>
 <ul>
-<li>Size: 1280x800 pixels. Avoid using larger images! The Raspberry Pi isn't that powerful; large images may cause some slowdown.</li>
+<li>Size: {{ config['MAX_X'] }}x{{ config['MAX_Y'] }} pixels.</li>
 <li>Formats: .png, .gif, .jpg, .jpeg.</li>
+    <li><span style="color:red">New: PDF support!</span> PDF images will be converted to jpeg</li>
+    <li><span style="color:red">New: Automatic Resize!</span> Images will be scaled to fit. If they are too small in either dimension, a black/white/green background will be added</li>
 </ul>
 
 <h3>Updating/Deleting Images</h3>
@@ -15,9 +17,16 @@
 <li>To update, delete the old image first and re-upload (otherwise your image will be duplicated)</li>
 </ul>
 
+<br>
 <h3>Upload Form</h3>
 
 <form action="" method=post enctype=multipart/form-data>
+    <h5>Background Colour</h5>
+    <div>If your image does not match the aspect ratio, a background colour will be applied</div>
+    <input type="radio" name="colour" value="white" checked> White &nbsp;&nbsp;&nbsp;
+    <input type="radio" name="colour" value="black"> Black &nbsp;&nbsp;&nbsp;
+    <input type="radio" name="colour" value="green"> Biology Green
+    <h5>Filename</h5>
   <input type=file name=file>
   <input type=submit value=Upload>
 </form>

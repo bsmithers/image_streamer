@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>Your file was uploaded successfully</h1>
-<p><b>IMPORTANT:</b>To remove this file, please visit http://luca.cs.bris.ac.uk/image_streamer/delete?fileid={{ filename }}. Keep this link safe and private!</p>
-<p>You can also <a href="http://luca.cs.bris.ac.uk/image_streamer/static/uploads/{{ filename }}">preview your image<a/></p>
+<p><b>IMPORTANT:</b>To remove this file, please visit {{ config['URL'] }}/delete?fileid={{ filename }}. Keep this link safe and private!</p>
+<p>You can also <a href="{{ config['URL'] }}/{{ config['UPLOAD_FOLDER'] }}/{{ filename }}">preview your image<a/></p>
 </body>
 

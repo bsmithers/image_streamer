@@ -1,2 +1,7 @@
+URL=''
 UPLOAD_FOLDER = ''
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+DISPLAY_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+UPLOAD_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'pdf'])
+
+MAX_X=1280
+MAX_Y=800
