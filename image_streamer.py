@@ -5,6 +5,7 @@ import json
 import os
 import sys
 import time
+import glob
 
 from flask import Flask, request, redirect,  render_template
 
@@ -34,7 +35,7 @@ def upload_file():
         print >> sys.stderr, 'Uploading file'
         filename = get_destination_filename(file.filename)
         print >> sys.stderr, 'New filename is: ', filename
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
         return render_template('success.html', filename=filename)
     
     return 'Upload Failed!'
@@ -42,7 +43,7 @@ def upload_file():
 @app.route('/delete', methods=['GET'])
 def delete_file():
     filename = request.args.get('fileid')
-    fullname = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    fullname = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename)
     if not os.path.isfile(fullname):
         return 'That file does not exist!'
     os.remove(fullname)
@@ -50,6 +51,9 @@ def delete_file():
 
 @app.route('/listing')
 def get_file_listing():
-    files = os.listdir(app.config['UPLOAD_FOLDER'])
-    files = ['static/uploads/' + s for s in files]
+    files = []
+    for filetype in app.config['ALLOWED_EXTENSIONS']:
+        files.extend(glob.glob(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'],'*.' + filetype)))
+
+    files = map(lambda f: os.path.relpath(f, app.root_path), files)
     return json.dumps(files)
