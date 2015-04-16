@@ -1,5 +1,9 @@
+# Config files
 static/config.json
 config.py
+
+# PyCharm files
+.idea*
 
 #
 # Begin Github Python gitignore boiler plate
